@@ -59,8 +59,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         // Add a marker in Sydney and move the camera
         LatLng toronto = new LatLng(43.6629, -79.3957);
         drawPickUpMarker(mMap, toronto, 1000);
+        mMap.setMinZoomPreference(14.0f);
+        mMap.setMaxZoomPreference(20.0f);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(30.0f));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(toronto));
-
     }
 
     public void drawPickUpMarker(GoogleMap gmap, LatLng coordinates, int radius) {
