@@ -71,21 +71,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap.animateCamera(CameraUpdateFactory.zoomTo(30.0f));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(toronto));
         mMap.setOnMarkerClickListener(new MarkerClickListener());
+//        mMap.setMyLocationEnabled(true);
     }
 
     public Marker drawPickUpMarker(Event pickUpEvent) {
         LatLng coordinates = new LatLng(pickUpEvent.latitude, pickUpEvent.longitude);
-        ArrayList<Object> objects;
-        objects = new ArrayList<>();
-        objects.add(this);
-        objects.add(pickUpEvent);
+        ActivityToMarkerBundle bundle = new ActivityToMarkerBundle(this, pickUpEvent);
         mMap.addCircle(new CircleOptions()
                 .center(coordinates)
                 .radius(pickUpEvent.radius)
                 .fillColor(color)
                 .strokeColor(transparent));
         Marker pickUpMarker = mMap.addMarker(new MarkerOptions().position(coordinates).title(pickUpEvent.description));
-        pickUpMarker.setTag(objects);
+        pickUpMarker.setTag(bundle);
         return pickUpMarker;
     }
 

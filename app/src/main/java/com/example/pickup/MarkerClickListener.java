@@ -13,18 +13,17 @@ public class MarkerClickListener implements GoogleMap.OnMarkerClickListener {
     @Override
     public boolean onMarkerClick(Marker m) {
 
-        ArrayList<Object> objects = (ArrayList<Object>) m.getTag();
-        MapActivity mapActivity = (MapActivity) objects.get(0);
+        ActivityToMarkerBundle bundle = (ActivityToMarkerBundle) m.getTag();
 
-        Intent intent = new Intent(mapActivity, PickupInfoActivity.class);
+        Intent intent = new Intent(bundle.mapActivity, PickupInfoActivity.class);
 
-        Event event = (Event) objects.get(1);
+        Event event = (Event) bundle.event;
 
         intent.putExtra("Description", event.description);
         intent.putExtra("MinPeople", event.minPeople);
         intent.putExtra("MaxPeople", event.maxPeople);
-        System.out.println("YEET");
-        mapActivity.startActivity(intent);
+
+        bundle.mapActivity.startActivity(intent);
         return false;
     }
 }
