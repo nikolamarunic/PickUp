@@ -14,16 +14,18 @@ public class User {
     /**
      * Create an event hosted by the user.
      */
-    void createEvent() {
+    boolean createEvent() {
         if (hasActiveEvent) {
             System.out.println("Already have an active game");
-            return;
+            return false;
         }
         hasActiveEvent = true;
 
         //Must communicate with server to create geofence
         //
         //create new event
+
+        return true;
 
     }
 
