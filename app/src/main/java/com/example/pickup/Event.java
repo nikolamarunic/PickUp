@@ -12,7 +12,7 @@ public class Event {
     int max_people;
 
     User host;
-    ArrayList<User> guestsWithIntents;
+    ArrayList<User> guestsWithIntent;
     ArrayList<User> activeUsers;
     String description;
 
@@ -28,6 +28,10 @@ public class Event {
     }
 
     public void addGuestWithIntent(User guest) {
-        guestsWithIntents.add(guest);
+        guestsWithIntent.add(guest);
+    }
+
+    public void notifyUsers() {
+
     }
 }
