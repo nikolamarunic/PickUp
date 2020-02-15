@@ -1,12 +1,12 @@
 package com.example.pickup;
 
 public class User {
-    private int activeEvents;
+    private boolean hasActiveEvent;
     private String deviceID;
     private String name;
 
     public User (String givenID, String givenName) {
-        activeEvents = 0;
+        hasActiveEvent = false;
         deviceID = givenID;
         name = givenName;
     }
@@ -15,11 +15,11 @@ public class User {
      * Create an event hosted by the user.
      */
     void create_event() {
-        if (activeEvents != 0) {
+        if (hasActiveEvent) {
             System.out.println("Already have an active game");
             return;
         }
-        activeEvents += 1;
+        hasActiveEvent = true;
 
         //Must communicate with server to create geofence
 
