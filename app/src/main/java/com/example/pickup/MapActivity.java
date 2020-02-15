@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private final int color = (150 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
@@ -68,16 +70,24 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap.setMaxZoomPreference(20.0f);
         mMap.animateCamera(CameraUpdateFactory.zoomTo(30.0f));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(toronto));
+        mMap.setOnMarkerClickListener(new MarkerClickListener());
     }
 
     public Marker drawPickUpMarker(Event pickUpEvent) {
         LatLng coordinates = new LatLng(pickUpEvent.latitude, pickUpEvent.longitude);
-
+        ArrayList<Object> objects;
+        objects = new ArrayList<>();
+        objects.add(this);
+        objects.add(pickUpEvent);
         mMap.addCircle(new CircleOptions()
                 .center(coordinates)
                 .radius(pickUpEvent.radius)
                 .fillColor(color)
                 .strokeColor(transparent));
-        return mMap.addMarker(new MarkerOptions().position(coordinates).title(pickUpEvent.description));
+        Marker pickUpMarker = mMap.addMarker(new MarkerOptions().position(coordinates).title(pickUpEvent.description));
+        pickUpMarker.setTag(objects);
+        return pickUpMarker;
     }
+
+
 }
