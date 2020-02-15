@@ -1,34 +1,23 @@
 package com.example.pickup;
 
-import java.util.ArrayList;
-
 public class Event {
-    int latitude;
-    int longitude;
+    int radius;
 
-    String geofence_id;
+    double latitude;
+    double longitude;
 
-    int min_people;
-    int max_people;
+    int minPeople;
+    int maxPeople;
 
-    User host;
-    ArrayList<User> guestsWithIntent;
-    ArrayList<User> activeUsers;
     String description;
 
-    public Event(int latitude, int longitude, int min_people, int max_people, User host, String description) {
+    public Event(int radius, double latitude, double longitude, int minPeople, int maxPeople, String description) {
+        this.radius = radius;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.min_people = min_people;
-        this.max_people = max_people;
-        this.host = host;
+        this.minPeople = minPeople;
+        this.maxPeople = maxPeople;
         this.description = description;
-
-        activeUsers.add(host);
-    }
-
-    public void addGuestWithIntent(User guest) {
-        guestsWithIntent.add(guest);
     }
 
     public void notifyUsers() {

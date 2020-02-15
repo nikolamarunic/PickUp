@@ -41,7 +41,8 @@ public class User {
      * @param event the event the user is interested in.
      */
     void expressIntent(Event event) {
-        event.addGuestWithIntent(this); //perhaps want to send distance as well?
+        // Tell server to add someone
+//        event.addGuestWithIntent(this); //perhaps want to send distance as well?
         hasActiveEvent = true;
     }
 

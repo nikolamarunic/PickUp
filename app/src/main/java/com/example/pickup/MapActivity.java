@@ -14,9 +14,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    private final int color = (150 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
+    private final int transparent = (0 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
 
     private GoogleMap mMap;
     private Button makeEventButton;
@@ -58,21 +62,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         // Add a marker in Sydney and move the camera
         LatLng toronto = new LatLng(43.6629, -79.3957);
-        drawPickUpMarker(mMap, toronto, 1000);
+        Event testEvent = new Event(1000, 43.6629, -79.3957, 1, 5, "night-time ball sesh");
+        drawPickUpMarker(testEvent);
         mMap.setMinZoomPreference(14.0f);
         mMap.setMaxZoomPreference(20.0f);
         mMap.animateCamera(CameraUpdateFactory.zoomTo(30.0f));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(toronto));
     }
 
-    public void drawPickUpMarker(GoogleMap gmap, LatLng coordinates, int radius) {
-        mMap.addMarker(new MarkerOptions().position(coordinates).title("UofT"));
-        int color = (150 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
-        int transparent = (0 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
-        gmap.addCircle(new CircleOptions()
+    public Marker drawPickUpMarker(Event pickUpEvent) {
+        LatLng coordinates = new LatLng(pickUpEvent.latitude, pickUpEvent.longitude);
+
+        mMap.addCircle(new CircleOptions()
                 .center(coordinates)
-                .radius(radius)
+                .radius(pickUpEvent.radius)
                 .fillColor(color)
                 .strokeColor(transparent));
+        return mMap.addMarker(new MarkerOptions().position(coordinates).title(pickUpEvent.description));
     }
 }
