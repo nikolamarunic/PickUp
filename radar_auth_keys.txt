@@ -1,0 +1,4 @@
+Live Secret: prj_live_sk_dce415dc7a097e9914b98237ae076deb0d689450
+Live Publishable: prj_live_pk_598126e8bc2d50f1da77cf8261a9255c9c7d63fc
+Test Secret: prj_test_sk_3e1e8fc36a7b1c5a8e22b128ec8f7c9a05de693d
+Test Publishable: prj_test_pk_af114cb35b123e9ba6aa6d97689969e5f0c40ddf
