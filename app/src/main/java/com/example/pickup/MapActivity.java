@@ -69,9 +69,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap.addMarker(new MarkerOptions().position(coordinates).title("UofT"));
         int color = (150 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
         int transparent = (0 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
-        Circle circle = mMap.addCircle(new CircleOptions()
+        gmap.addCircle(new CircleOptions()
                 .center(coordinates)
-                .radius(100)
+                .radius(radius)
                 .fillColor(color)
                 .strokeColor(transparent));
     }
