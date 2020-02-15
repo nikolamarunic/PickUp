@@ -2,6 +2,7 @@ package com.example.pickup;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,11 +28,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        final Intent intent = new Intent(this, CreatePickupActivity.class);
+
         makeEventButton = findViewById(R.id.makeEventButton);
         makeEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("Button Success!!!");
+                startActivity(intent);
             }
         });
     }
