@@ -11,6 +11,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -55,8 +57,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng toronto = new LatLng(43.6629, -79.3957);
+        drawPickUpMarker(mMap, toronto, 1000);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(toronto));
+
+    }
+
+    public void drawPickUpMarker(GoogleMap gmap, LatLng coordinates, int radius) {
+        mMap.addMarker(new MarkerOptions().position(coordinates).title("UofT"));
+        int color = (150 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
+        int transparent = (0 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
+        Circle circle = mMap.addCircle(new CircleOptions()
+                .center(coordinates)
+                .radius(100)
+                .fillColor(color)
+                .strokeColor(transparent));
     }
 }
