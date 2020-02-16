@@ -3,6 +3,7 @@ package com.example.pickup;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,16 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PickUpClient client = new PickUpClient();
+        try {
+            client.update();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.out.println("Cannot update");
+        }
+
+        drawPlayer(client.latitude, client.longitude);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_lock_screen);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -53,6 +64,15 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
                 finish();
             }
         });
+    }
+
+    private void drawPlayer(double latitude, double longitude) {
+        LatLng coordinates = new LatLng(latitude, longitude);
+        mMap.addCircle(new CircleOptions()
+                .center(coordinates)
+                .radius(20)
+                .fillColor(Color.BLUE)
+                .strokeColor(transparent));
     }
 
 
