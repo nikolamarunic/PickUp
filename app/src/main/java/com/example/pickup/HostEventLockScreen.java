@@ -11,15 +11,18 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
-public class HostEventLockScreen extends ListActivity {
+public class HostEventLockScreen extends ListActivity implements Updateable {
     final int RADIUS = 1000;
     int counter = 0;
     ArrayList<String> listItems=new ArrayList<String>();
     ArrayAdapter<String> adapter;
+    public PickUpClient client;
+    public ClientRunnable clientRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PickUpClient client = new PickUpClient();
+        client = new PickUpClient();
+        clientRunnable = new ClientRunnable(client, this);
 
         try {
             client.update();
@@ -65,6 +68,8 @@ public class HostEventLockScreen extends ListActivity {
             System.out.println("Help");
             t.printStackTrace();
         }
+
+        clientRunnable.start();
     }
 
     public void addItems(View v) {
@@ -82,6 +87,11 @@ public class HostEventLockScreen extends ListActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void clearItems() {
+        listItems = new ArrayList<>();
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -93,4 +103,17 @@ public class HostEventLockScreen extends ListActivity {
         }
     }
 
+    @Override
+    public void update() {
+        try {
+            client.update();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.out.println("Cannot update");
+        }
+        clearItems();
+        for (PickUpClient.LobbyEntry player:client.players) {
+            addItems(player.username);
+        }
+    }
 }

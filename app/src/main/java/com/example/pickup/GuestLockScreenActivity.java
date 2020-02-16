@@ -135,6 +135,7 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
             t.printStackTrace();
         }
         super.onDestroy();
+        clientRunnable.interrupt();
     }
 
     @Override
