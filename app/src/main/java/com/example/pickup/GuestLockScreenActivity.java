@@ -24,6 +24,7 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
     private GoogleMap mMap;
     private Event pickUpEvent;
     Button leaveButton;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
         int radius = receivedIntent.getIntExtra("radius", 0);
         double longitude = receivedIntent.getDoubleExtra("longitude", 0);
         double latitude = receivedIntent.getDoubleExtra("latitude", 0);
-        String id = receivedIntent.getStringExtra("id");
+        id = receivedIntent.getStringExtra("id");
 
         pickUpEvent = new Event(id, radius, latitude, longitude, minPeople, maxPeople, desc);
 
@@ -91,7 +92,12 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
     }
     @Override
     public void onDestroy() {
+        try {
+            (new PickUpClient()).leaveEvent(id);
 
+        } catch (Throwable t){
+            t.printStackTrace();
+        }
         super.onDestroy();
     }
 }
