@@ -48,7 +48,7 @@ public class PickUpClient {
             sock.connect(new InetSocketAddress("100.80.198.227", 12345));
             OutputStreamWriter os = new OutputStreamWriter(sock.getOutputStream());
             os.write(ANDROID_ID + "\n" + prefix);
-            os.write("" + request.length());
+            os.write("" + request.length() + "\n");
             os.write(request);
             BufferedReader is = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             ArrayList<String> lines = new ArrayList<String>();
