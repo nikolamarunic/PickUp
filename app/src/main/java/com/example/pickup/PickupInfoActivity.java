@@ -55,11 +55,6 @@ public class PickupInfoActivity extends AppCompatActivity {
         going.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    (new PickUpClient()).joinEvent(id);
-                } catch (Throwable t){
-                    t.printStackTrace();
-                }
                 startActivity(outgoingIntent);
             }
         });

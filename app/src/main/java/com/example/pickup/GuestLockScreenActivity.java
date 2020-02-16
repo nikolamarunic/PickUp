@@ -29,16 +29,6 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PickUpClient client = new PickUpClient();
-        try {
-            client.update();
-        } catch (Throwable t) {
-            t.printStackTrace();
-            System.out.println("Cannot update");
-        }
-
-        drawPlayer(client.latitude, client.longitude);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_lock_screen);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -54,6 +44,21 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
         double longitude = receivedIntent.getDoubleExtra("longitude", 0);
         double latitude = receivedIntent.getDoubleExtra("latitude", 0);
         id = receivedIntent.getStringExtra("id");
+
+        PickUpClient client = new PickUpClient();
+        try {
+            client.joinEvent(id);
+        } catch (Throwable t){
+            t.printStackTrace();
+        }
+        try {
+            client.update();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.out.println("Cannot update");
+        }
+
+        drawPlayer(client.latitude, client.longitude);
 
         pickUpEvent = new Event(id, radius, latitude, longitude, minPeople, maxPeople, desc);
 
