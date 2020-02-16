@@ -49,7 +49,13 @@ public class HostEventLockScreen extends ListActivity {
         //CALL API FOR LAT AND LONG
         int lat = 0;
         int lng = 0;
-        Event event = new Event(RADIUS, lat, lng, min, max, desc);
+
+        try {
+            (new PickUpClient()).createGeofence(100, max, desc);
+        } catch (Throwable t) {
+            System.out.println("Help");
+            t.printStackTrace();
+        }
     }
 
     public void addItems(View v) {
@@ -65,6 +71,17 @@ public class HostEventLockScreen extends ListActivity {
     public void subtractItems(String item) {
         listItems.remove(item);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            (new PickUpClient()).destroyGeofence();
+        } catch (Throwable t) {
+            System.out.println("Can't leave event");
+            t.printStackTrace();
+        }
     }
 
 }
