@@ -9,4 +9,5 @@
         <item>Study</item>
         <item>Other</item>
     </string-array>
+    <string name="title_activity_guest_lock_screen">Map</string>
 </resources>
