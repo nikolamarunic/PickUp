@@ -36,6 +36,7 @@
             android:label="@string/title_activity_guest_lock_screen"></activity>
         <activity android:name=".PickupInfoActivity" />
         <activity android:name=".CreatePickupActivity" />
+        <activity android:name=".HostEventLockScreen" />
         <activity
             android:name=".MapActivity"
             android:label="@string/title_activity_map">
