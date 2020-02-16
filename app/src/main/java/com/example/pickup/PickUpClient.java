@@ -50,6 +50,7 @@ public class PickUpClient {
             os.write(ANDROID_ID + "\n" + prefix);
             os.write("" + request.length() + "\n");
             os.write(request);
+            os.flush();
             BufferedReader is = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             ArrayList<String> lines = new ArrayList<String>();
             String line;
