@@ -21,10 +21,17 @@ public class HostEventLockScreen extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_event_lock_screen);
-        Button leaveButton = findViewById(R.id.leaveBtn);
+        final Button leaveButton = findViewById(R.id.leaveBtn);
         leaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    PickUpClient serverCaller = new PickUpClient();
+                    serverCaller.destroyGeofence();
+                } catch(Throwable t){
+                    t.printStackTrace();
+                    System.out.println("Server request failed.");
+                }
                 finish();
             }
         });
