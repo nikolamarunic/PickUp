@@ -17,8 +17,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy(Bundle savedInstanceState) {
-    	Radar.stopTracking();
+    protected void onDestroy() {
+        super.onDestroy();
+        Radar.stopTracking();
     }
     String deviceID;
     String name;
