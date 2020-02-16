@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,6 +22,7 @@ import io.radar.sdk.Radar;
 
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -45,9 +47,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        Radar.initialize("prj_live_pk_598126e8bc2d50f1da77cf8261a9255c9c7d63fc");
-        Radar.startTracking();
 
         final Intent intent = new Intent(this, CreatePickupActivity.class);
 

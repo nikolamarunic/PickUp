@@ -38,9 +38,9 @@ public class PickUpClient {
 
     }
 
-    public ArrayList<LobbyEntry> players;
+    public ArrayList<LobbyEntry> players = new ArrayList<LobbyEntry>();
 
-    public static final String ANDROID_ID = Settings.Secure.ANDROID_ID;
+    public static String ANDROID_ID;
 
     private ArrayList<String> send(String prefix, String request) throws Throwable {
         Socket sock = null;
