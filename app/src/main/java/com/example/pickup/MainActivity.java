@@ -20,4 +20,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy(Bundle savedInstanceState) {
     	Radar.stopTracking();
     }
+    String deviceID;
+    String name;
+
+    // COMMUNICATE W SERVER FOR USER ID
+
+    //
+    User user = new User(deviceID, name);
 }
