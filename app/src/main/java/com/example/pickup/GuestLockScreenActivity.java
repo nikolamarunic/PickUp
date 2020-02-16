@@ -3,6 +3,7 @@ package com.example.pickup;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,12 +12,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GuestLockScreenActivity extends FragmentActivity implements OnMapReadyCallback {
+public class GuestLockScreenActivity extends FragmentActivity implements OnMapReadyCallback, Updateable {
     private final int color = (150 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
     private final int transparent = (0 & 0xff) << 24 | (107 & 0xff) << 16 | (159 & 0xff) << 8 | (242 & 0xff);
 
@@ -25,6 +27,11 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
     private Event pickUpEvent;
     Button leaveButton;
     String id;
+    public PickUpClient client;
+    Circle mapCircle;
+
+    ClientRunnable clientRunnable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,21 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
         double latitude = receivedIntent.getDoubleExtra("latitude", 0);
         id = receivedIntent.getStringExtra("id");
 
+        client = new PickUpClient();
+        try {
+            client.joinEvent(id);
+        } catch (Throwable t){
+            t.printStackTrace();
+        }
+        try {
+            client.update();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.out.println("Cannot update");
+        }
+
+        drawPlayer(client.latitude, client.longitude);
+
         pickUpEvent = new Event(id, radius, latitude, longitude, minPeople, maxPeople, desc);
 
         leaveButton = findViewById(R.id.leaveButton);
@@ -53,6 +75,20 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
                 finish();
             }
         });
+        clientRunnable = new ClientRunnable(client, this);
+        clientRunnable.start();
+    }
+
+    private void drawPlayer(double latitude, double longitude) {
+        if (mapCircle != null) {
+            mapCircle.remove();
+        }
+        LatLng coordinates = new LatLng(latitude, longitude);
+        mapCircle = mMap.addCircle(new CircleOptions()
+                .center(coordinates)
+                .radius(20)
+                .fillColor(Color.BLUE)
+                .strokeColor(transparent));
     }
 
 
@@ -99,5 +135,17 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
             t.printStackTrace();
         }
         super.onDestroy();
+        clientRunnable.interrupt();
+    }
+
+    @Override
+    public void update() {
+        try {
+            client.update();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.out.println("Cannot update");
+        }
+        drawPlayer(client.latitude, client.longitude);
     }
 }
