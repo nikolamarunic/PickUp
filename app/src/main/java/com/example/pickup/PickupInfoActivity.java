@@ -12,6 +12,7 @@ public class PickupInfoActivity extends AppCompatActivity {
     Button going;
     Button notGoing;
     Intent outgoingIntent;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class PickupInfoActivity extends AppCompatActivity {
         int radius = receivedIntent.getIntExtra("radius", 0);
         double longitude = receivedIntent.getDoubleExtra("longitude", 0);
         double latitude = receivedIntent.getDoubleExtra("latitude", 0);
-        String id = receivedIntent.getStringExtra("id");
+        id = receivedIntent.getStringExtra("id");
 
         setContentView(R.layout.activity_pickup_info);
 
@@ -54,6 +55,11 @@ public class PickupInfoActivity extends AppCompatActivity {
         going.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    (new PickUpClient()).joinEvent(id);
+                } catch (Throwable t){
+                    t.printStackTrace();
+                }
                 startActivity(outgoingIntent);
             }
         });
