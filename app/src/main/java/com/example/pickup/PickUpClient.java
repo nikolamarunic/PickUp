@@ -45,7 +45,7 @@ public class PickUpClient {
     private ArrayList<String> send(String request) throws Throwable {
         Socket sock = new Socket();
         try {
-            sock.bind(new InetSocketAddress("hostname", 12345));
+            sock.connect(new InetSocketAddress("100.80.198.227", 12345));
             OutputStreamWriter os = new OutputStreamWriter(sock.getOutputStream());
             os.write(ANDROID_ID + "\n");
             os.write(request);
