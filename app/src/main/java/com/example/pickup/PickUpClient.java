@@ -43,25 +43,37 @@ public class PickUpClient {
     public static final String ANDROID_ID = Settings.Secure.ANDROID_ID;
 
     private ArrayList<String> send(String prefix, String request) throws Throwable {
-        Socket sock = new Socket();
+        Socket sock = null;
         try {
-            sock.connect(new InetSocketAddress("100.80.198.227", 12345));
+            sock = new Socket("100.80.227.39", 12345);
             OutputStreamWriter os = new OutputStreamWriter(sock.getOutputStream());
             os.write(ANDROID_ID + "\n" + prefix);
             os.write("" + request.length() + "\n");
             os.write(request);
             os.flush();
-            BufferedReader is = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            sock.shutdownOutput();
+            InputStream is = sock.getInputStream();
             ArrayList<String> lines = new ArrayList<String>();
-            String line;
-            while ((line = is.readLine()) != null) {
-                lines.add(line);
+            StringBuilder sb = new StringBuilder();
+            int c;
+            while ((c = is.read()) != -1) {
+                if (c == '\n') {
+                    lines.add(sb.toString());
+                    sb = new StringBuilder();
+                } else {
+                    sb.append((char)c);
+                }
+            }
+            if (sb.length() > 0) {
+                lines.add(sb.toString());
             }
             return lines;
         } catch (Throwable e) {
             throw e;
         } finally {
-            sock.close();
+            if (sock != null) {
+                sock.close();
+            }
         }
     }
 
@@ -151,7 +163,9 @@ public class PickUpClient {
         for (int i = 0; i < lines.size(); i++) {
             if (i + 3 >= lines.size()) {
                 if (!lines.get(i).equals("" + (char)255)) {
-                    throw new Exception("Non-OK response from server or invalid format");
+                    throw new Exception(lines.get(i) + (i + 1 < lines.size() ? lines.get(i + 1) : "")
+                                                     + (i + 2 < lines.size() ? lines.get(i + 2) : "")
+                                                     + ", Non-OK response from server or invalid format");
                 }
             }
             String geoid = lines.get(i++);
