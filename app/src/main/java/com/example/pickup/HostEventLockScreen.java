@@ -55,4 +55,9 @@ public class HostEventLockScreen extends ListActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void subtractItems(String item) {
+        listItems.remove(item);
+        adapter.notifyDataSetChanged();
+    }
+
 }
