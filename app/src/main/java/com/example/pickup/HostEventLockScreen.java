@@ -19,6 +19,15 @@ public class HostEventLockScreen extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PickUpClient client = new PickUpClient();
+
+        try {
+            client.update();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.out.println("Cannot update");
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_event_lock_screen);
         final Button leaveButton = findViewById(R.id.leaveBtn);
@@ -46,9 +55,9 @@ public class HostEventLockScreen extends ListActivity {
         setListAdapter(adapter);
 
 
-        //CALL API FOR LAT AND LONG
-        int lat = 0;
-        int lng = 0;
+        for (PickUpClient.LobbyEntry player:client.players) {
+            addItems(player.username);
+        }
 
         try {
             (new PickUpClient()).createGeofence(100, max, desc);
