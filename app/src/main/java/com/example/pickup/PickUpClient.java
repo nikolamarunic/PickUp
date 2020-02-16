@@ -42,12 +42,13 @@ public class PickUpClient {
 
     public static final String ANDROID_ID = Settings.Secure.ANDROID_ID;
 
-    private ArrayList<String> send(String request) throws Throwable {
+    private ArrayList<String> send(String prefix, String request) throws Throwable {
         Socket sock = new Socket();
         try {
             sock.connect(new InetSocketAddress("100.80.198.227", 12345));
             OutputStreamWriter os = new OutputStreamWriter(sock.getOutputStream());
-            os.write(ANDROID_ID + "\n");
+            os.write(ANDROID_ID + "\n" + prefix);
+            os.write("" + request.length());
             os.write(request);
             BufferedReader is = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             ArrayList<String> lines = new ArrayList<String>();
@@ -64,7 +65,7 @@ public class PickUpClient {
     }
 
     public void createGeofence(int radius, int capacity, String desc) throws Throwable {
-        ArrayList<String> lines = send("c" + radius + "\n" + capacity + "\n" + desc);
+        ArrayList<String> lines = send("c", radius + "\n" + capacity + "\n" + desc);
         if (lines.size() == 0) {
             throw new Exception("Heard no reply from server");
         }
@@ -75,7 +76,7 @@ public class PickUpClient {
     }
 
     public void destroyGeofence() throws Throwable {
-        ArrayList<String> lines = send("d");
+        ArrayList<String> lines = send("d", "");
         if (lines.size() == 0) {
             throw new Exception("Heard no reply from server");
         }
@@ -116,7 +117,7 @@ public class PickUpClient {
     }
 
     public void update() throws Throwable {
-        ArrayList<String> lines = send("u");
+        ArrayList<String> lines = send("u", "");
         if (lines.size() == 0) {
             throw new Exception("Heard no reply from server");
         }
@@ -144,7 +145,7 @@ public class PickUpClient {
     }
 
     public ArrayList<EventEntry> searchEvents(int radius) throws Throwable {
-        ArrayList<String> lines = send("s" + radius);
+        ArrayList<String> lines = send("s", "" + radius);
         ArrayList<EventEntry> toreturn = new ArrayList<EventEntry>();
         for (int i = 0; i < lines.size(); i++) {
             if (i + 3 >= lines.size()) {
@@ -185,7 +186,7 @@ public class PickUpClient {
     }
 
     public void joinEvent(String geoid) throws Throwable {
-        ArrayList<String> lines = send("j" + geoid);
+        ArrayList<String> lines = send("j", geoid);
         if (lines.size() == 0) {
             throw new Exception("Heard no reply from server");
         }
@@ -196,7 +197,7 @@ public class PickUpClient {
     }
 
     public void leaveEvent(String geoid) throws Throwable {
-        ArrayList<String> lines = send("l" + geoid);
+        ArrayList<String> lines = send("l", geoid);
         if (lines.size() == 0) {
             throw new Exception("Heard no reply from server");
         }
@@ -207,7 +208,7 @@ public class PickUpClient {
     }
 
     public void nameSet(String username) throws Throwable {
-        ArrayList<String> lines = send("n" + username);
+        ArrayList<String> lines = send("n", username);
         if (lines.size() == 0) {
             throw new Exception("Heard no reply from server");
         }
