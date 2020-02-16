@@ -24,6 +24,7 @@ public class PickupInfoActivity extends AppCompatActivity {
         int radius = receivedIntent.getIntExtra("radius", 0);
         double longitude = receivedIntent.getDoubleExtra("longitude", 0);
         double latitude = receivedIntent.getDoubleExtra("latitude", 0);
+        String id = receivedIntent.getStringExtra("id");
 
         setContentView(R.layout.activity_pickup_info);
 
@@ -46,6 +47,7 @@ public class PickupInfoActivity extends AppCompatActivity {
         outgoingIntent.putExtra("latitude", latitude);
         outgoingIntent.putExtra("longitude", longitude);
         outgoingIntent.putExtra("radius", radius);
+        outgoingIntent.putExtra("id", id);
     }
 
     private void addListeners() {

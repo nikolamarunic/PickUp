@@ -72,7 +72,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         try {
             ArrayList<PickUpClient.EventEntry> visible_events = (new PickUpClient()).searchEvents(1000);
             for (PickUpClient.EventEntry ev: visible_events) {
-                mp.makeEvent(ev.latitude, ev.longitude, 0, ev.players.size(), ev.desc);
+                mp.makeEvent(ev.id, ev.latitude, ev.longitude, 0, ev.players.size(), ev.desc);
             }
         } catch (Throwable e){
             System.out.println("thats not good");
@@ -96,7 +96,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         // Add a marker in Sydney and move the camera
         LatLng toronto = new LatLng(43.6629, -79.3957);
-        Event testEvent = new Event(1000, 43.6629, -79.3957, 1, 5, "night-time ball sesh");
+        Event testEvent = new Event("",1000, 43.6629, -79.3957, 1, 5, "night-time ball sesh");
         drawPickUpMarker(testEvent);
         mMap.setMinZoomPreference(14.0f);
         mMap.setMaxZoomPreference(20.0f);

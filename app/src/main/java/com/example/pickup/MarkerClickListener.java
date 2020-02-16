@@ -25,6 +25,7 @@ public class MarkerClickListener implements GoogleMap.OnMarkerClickListener {
         intent.putExtra("latitude", event.latitude);
         intent.putExtra("longitude", event.longitude);
         intent.putExtra("radius", event.radius);
+        intent.putExtra("id", event.id);
 
         bundle.mapActivity.startActivity(intent);
         return false;
