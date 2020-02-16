@@ -4,6 +4,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +23,8 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
 
     private GoogleMap mMap;
     private Event pickUpEvent;
+    Button leaveButton;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,17 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
         int radius = receivedIntent.getIntExtra("radius", 0);
         double longitude = receivedIntent.getDoubleExtra("longitude", 0);
         double latitude = receivedIntent.getDoubleExtra("latitude", 0);
+        id = receivedIntent.getStringExtra("id");
 
-        pickUpEvent = new Event(radius, latitude, longitude, minPeople, maxPeople, desc);
+        pickUpEvent = new Event(id, radius, latitude, longitude, minPeople, maxPeople, desc);
+
+        leaveButton = findViewById(R.id.leaveButton);
+        leaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
 
@@ -56,7 +69,7 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng toronto = new LatLng(43.6629, -79.3957);
-        Event testEvent = new Event(1000, 43.6629, -79.3957, 1, 5, "night-time ball sesh");
+        Event testEvent = new Event("",1000, 43.6629, -79.3957, 1, 5, "night-time ball sesh");
         drawPickUpMarker(testEvent);
         mMap.setMinZoomPreference(14.0f);
         mMap.setMaxZoomPreference(20.0f);
@@ -76,5 +89,15 @@ public class GuestLockScreenActivity extends FragmentActivity implements OnMapRe
         Marker pickUpMarker = mMap.addMarker(new MarkerOptions().position(coordinates).title(pickUpEvent.description));
         pickUpMarker.setTag(pickUpEvent);
         return pickUpMarker;
+    }
+    @Override
+    public void onDestroy() {
+        try {
+            (new PickUpClient()).leaveEvent(id);
+
+        } catch (Throwable t){
+            t.printStackTrace();
+        }
+        super.onDestroy();
     }
 }

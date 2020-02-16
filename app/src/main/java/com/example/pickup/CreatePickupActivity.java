@@ -43,6 +43,13 @@ public class CreatePickupActivity extends AppCompatActivity {
                 intent.putExtra("Min", min);
                 intent.putExtra("Max", max);
                 intent.putExtra("Desc", desc);
+                try {
+                    PickUpClient serverCaller = new PickUpClient();
+                    serverCaller.createGeofence(100, max, desc);
+                } catch(Throwable t){
+                    t.printStackTrace();
+                    System.out.println("Server request failed.");
+                }
                 startActivity(intent);
             }
         });
